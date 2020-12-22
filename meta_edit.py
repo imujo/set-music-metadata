@@ -1,33 +1,36 @@
 import eyed3
 import os
 
-song_path = 'C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music\Ali pamtim još - Hanka Paldum - Narodne.mp3'
+# ask user for path to songs & images
+songs_path = 'C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music\songs'
+images_path = 'C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music\images'
 
-song = eyed3.load(song_path)
 
-# song.tag.remove('C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music\Hanka Paldum - Ali pamtim još.mp3')
-# song.tag.save()
+for song in os.listdir(songs_path):
+    song_no_extension = os.path.splitext(song)[0]
+    name_components = [s.strip() for s in [splited.strip() for splited in song_no_extension.split('-')]]
 
-name = [path.strip() for path in song_path.split('\\')][-1].split('.')[0].split('-')
 
-# set title
-song.tag.title = name[0].strip()
-print(song.tag.title)
+    # load files
+    song_file = eyed3.load(os.path.join(songs_path, song))
+    image_file = open(os.path.join(images_path, name_components[1].replace(' ', '')+'.jpg'), 'rb').read()
 
-# set artist
-song.tag.artist = name[1].strip()
-print(song.tag.artist)
+    # set title
+    song_file.tag.title = name_components[0]
 
-# set image
-image = open('C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music\{}.jpg'.format(name[1].replace(' ', '')), 'rb').read()
-song.tag.images.set(1, image, 'image/jpg')
+    # set artist
+    song_file.tag.artist = name_components[1]
 
-# set genre
-song.tag.genre = name[2].strip()
-print(song.tag.genre)
+    # set image
+    song_file.tag.images.set(1, image_file, 'image/jpg')
 
-# set name
-# os.rename(song_path, os.path.join('C:\\Users\ivomu\Documents\Dev\PROGRAMIRANJE\Python\Music', '{}-{}'.format(name[0], name[1]+'.mp3')))
+    # set genre
+    song_file.tag.genre = name_components[2]
 
-# save
-song.tag.save()
+    # save
+    song_file.tag.save()
+
+    # rename
+    old_dir = os.path.join(songs_path, song)
+    new_dir = os.path.join(songs_path, '{} - {}.mp3'.format(name_components[0], name_components[1]))
+    os.rename(old_dir, new_dir)
