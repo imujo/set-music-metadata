@@ -36,11 +36,3 @@ When adding paths, set 2 backslashes after C!
 
 C: **\\\\** Desktop\Music...
 
-
-<style>
-
-strong{
-    color: red;
-}
-
-</style>
