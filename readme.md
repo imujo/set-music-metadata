@@ -30,7 +30,7 @@ Sets:
 
 ## NOTE!!!
 
-When adding paths, set 2 backslashes after C!
+When adding paths, you might need to add 2 backslashes after C!
 
 <br>
 
